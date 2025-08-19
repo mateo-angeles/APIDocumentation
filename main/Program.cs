@@ -11,3 +11,4 @@ string foo = "Hello, World!";
 /// This is a console write line operation.
 /// </summary>
 Console.WriteLine(foo);
+Console.WriteLine("WORKFLOW TEST 1");

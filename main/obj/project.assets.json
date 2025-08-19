@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\C#\\APIDocumentation\\APIDocumentation\\main\\main.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\C#\\APIDocumentation\\main\\main.csproj",
       "projectName": "main",
-      "projectPath": "C:\\Users\\Administrator\\source\\repos\\C#\\APIDocumentation\\APIDocumentation\\main\\main.csproj",
+      "projectPath": "C:\\Users\\Administrator\\source\\repos\\C#\\APIDocumentation\\main\\main.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\source\\repos\\C#\\APIDocumentation\\APIDocumentation\\main\\obj\\",
+      "outputPath": "C:\\Users\\Administrator\\source\\repos\\C#\\APIDocumentation\\main\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
