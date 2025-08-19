@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": ".\\main",
+          "files": [
+            "main.csproj"
+          ]
+        }
+      ],
+      "output": "api",
+      "includePrivateMembers": true,
+      "shouldSkipMarkup": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": "**/*.{md,yml}",
+        "exclude": "_site/**"
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ]
+  }
+}
