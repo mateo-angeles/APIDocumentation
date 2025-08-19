@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>main</name>
+    </assembly>
+    <members>
+        <member name="F:main.foo.foobar">
+            <summary>
+            This is a simple class.
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            This is a simple C# program to demonstrate API documentation with Github pages.
+            </summary> 
+            <summary>
+            This is a simple string variable.
+            </summary>
+        </member>
+    </members>
+</doc>

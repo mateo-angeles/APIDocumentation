@@ -10,15 +10,9 @@
           ]
         }
       ],
-      "output": "api/main",
-      "properties": {
-        "Configuration": "Release",
-        "TargetFramework": "net481",
-        "Platform": "x64",
-        "CodeAnalysisRuleSet": "",
-        "RunCodeAnalysis": "false",
-        "EnableNETAnalyzers": "false"
-      }
+      "output": "api",
+      "includePrivateMembers": true,
+      "shouldSkipMarkup": false
     }
   ],
   "build": {
