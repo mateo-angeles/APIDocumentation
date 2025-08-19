@@ -16,5 +16,6 @@ public class Program
         /// </summary>
         Console.WriteLine(foo);
         Console.WriteLine("WORKFLOW TEST 1");
+        Console.WriteLine("WORKFLOW TEST 13");
     }
 }
