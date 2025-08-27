@@ -4,12 +4,7 @@
         <name>main</name>
     </assembly>
     <members>
-        <member name="F:main.foo.foobar">
-            <summary>
-            This is a simple class.
-            </summary>
-        </member>
-        <member name="T:Program">
+        <member name="T:main.Program">
             <summary>
             This is a simple C# program to demonstrate API documentation with Github pages.
             </summary> 

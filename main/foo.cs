@@ -1,8 +1,11 @@
 ﻿namespace main;
-internal class foo
+public class foo
 {
-    /// <summary>
-    /// This is a simple class.
-    /// </summary>
-    string foobar = "Dummy Class";
+    public int foobarbaz()
+    {
+        return 42;
+    }
+    public string Bar { get; set; } = new string(string.Empty);
+
+    string _foobar = "Dummy Class";
 }

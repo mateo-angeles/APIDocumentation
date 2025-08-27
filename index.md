@@ -2,7 +2,7 @@
 _layout: landing
 ---
 
-# Welcome to the **MACE Documentation**.
+# Welcome to the **My Documentation**.
 
 Refer to [Helpful Link](<http://localhost:8080/docs/introduction.html>) for tutorial links.
 # Alerts
@@ -21,16 +21,3 @@ Refer to [Helpful Link](<http://localhost:8080/docs/introduction.html>) for tuto
 
 > [!WARNING]
 > Dangerous certain consequences of an action.
-
-# Image
-![NEW BSI (Wht) MACE_VECTOR_LOGO](<images/NEW BSI (Wht) MACE_Vector_Logo.png>)
-
-# Video
-*MACE2025 Feature Peek*
-> [!Video https://www.youtube.com/watch?v=TC3eDllpbkQ]
-
-# Write Your Code Here
-`Hello, MACE users!`
-
-# API Code Snippet
-[!code-csharp[](code/IPhysicalEntity.cs#L705-L708)]

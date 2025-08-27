@@ -12,14 +12,18 @@
       ],
       "output": "api",
       "includePrivateMembers": true,
-      "shouldSkipMarkup": false
+      "shouldSkipMarkup": false,
+      "filter": "filterConfig.yml"
     }
   ],
   "build": {
     "content": [
       {
         "files": "**/*.{md,yml}",
-        "exclude": "_site/**"
+        "exclude": [
+          "_site/**",
+          "filterConfig.yml"
+        ]
       }
     ],
     "output": "_site",
