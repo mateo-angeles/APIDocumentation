@@ -32,8 +32,12 @@ jobs:
 
     - name: Install DocFX
       run: dotnet tool update -g docfx
+
     - name: Build DocFX metadata
       run: docfx metadata docfx.json
+
+    - name: Build DocFX website
+      run: docfx build docfx.json
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v4
