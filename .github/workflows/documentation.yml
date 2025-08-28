@@ -30,8 +30,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with: { dotnet-version: 8.x }
 
-    - run: dotnet tool update -g docfx
-    - run: docfx docfx.json
+    - name: Install DocFX
+      run: dotnet tool update -g docfx
+    - name: Build DocFX metadata
+      run: docfx metadata docfx.json
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
