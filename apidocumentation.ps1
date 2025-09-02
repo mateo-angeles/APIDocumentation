@@ -14,3 +14,6 @@ $repo = Get-Location
 $apiDirectory = Join-Path $repo "api"
 $outputDirectory = Join-Path $repo "apidocs"
 New-Item -ItemType Directory -Force -Path $outputDirectory | Out-Null
+
+function SafeName([string]$string) { $s -replace '[^A-Za-z0-9_.-]+','_' }
+
