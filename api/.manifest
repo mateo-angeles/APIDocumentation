@@ -1,9 +1,0 @@
-{
-  "main": "main.yml",
-  "main.Program": "main.Program.yml",
-  "main.Program.Main(System.String[])": "main.Program.yml",
-  "main.foo": "main.foo.yml",
-  "main.foo.Bar": "main.foo.yml",
-  "main.foo._foobar": "main.foo.yml",
-  "main.foo.foobarbaz": "main.foo.yml"
-}
