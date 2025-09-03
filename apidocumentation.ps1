@@ -66,3 +66,32 @@ function BuildPrompt {
   $snippet
 "@
 }
+
+function CallLLM {
+  param([string]$prompt)
+
+  $body = @{
+    model = $env:LLMModel
+    temperature = 0
+    maxTokens = 300
+    messages = @(
+      @{ role = 'system'; content = 'You write concise, accurate C# XML documentation.
+      Do not invent behavior.'},
+      @{ role = 'user'; content = $prompt }
+    )
+  } | ConvertTo-Json -Depth 8
+  $headers = @{
+    authorization = 'Bearer $($env:LLMApiKey)'
+    'Content Type' = 'application/json'
+  }
+
+  $response = Invoke -RestMethod -Method Post -Uri `
+  $env:LLMBaseUrl -Header $headers -Body $body -TimeoutSec 120
+
+  # Adjust to your provider's response shape if needed.
+  $content = $response.choices[0].message.content
+  if ($content -match '^```') {
+    $content = $content -replace '^```(?:json)?\s*', '' -replace '\s*```$', ''
+  }
+  $content | ConvertFrom-Json
+}
