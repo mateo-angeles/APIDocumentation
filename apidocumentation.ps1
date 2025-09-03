@@ -95,3 +95,11 @@ function CallLLM {
   }
   $content | ConvertFrom-Json
 }
+
+$count = 0
+$ymls = Get-ChildItem -Path $apiDirectory -Recurse -Filter *.yml
+foreach ($yml in $ymls) {
+  $raw = Get-Content -LiteralPath $y.FullName -Raw -Encoding UTF8
+  $doc = ConvertFrom-Yaml $raw
+  $items = $doc.items
+  if (-not $items) { continue }
