@@ -154,3 +154,10 @@ foreach ($yml in $ymls) {
       [void]$stringBuilder.AppendLine(" Returns: $($generate.returns)")
     }
     [void]$stringBuilder.AppendLine('---')
+
+    Set-Content -LiteralPath $outputPath `
+    -Value $stringBuilder.ToString() -Encoding UTF8
+    $count++
+  }
+}
+Write-Host "Created/updated $count overwrite files in apidocs/"
