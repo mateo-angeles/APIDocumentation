@@ -122,3 +122,35 @@ foreach ($yml in $ymls) {
       Write-Warning "LLM call failed for $($item.uid): $_"
       continue
     }
+
+    $uid = $item.uid
+    $safe = SafeName $uid
+    $outputPath = Join-Path $outputDirectory "$safe.md"
+
+    $stringBuilder = New-Object System.Text.StringBuilder
+    [void]$stringBuilder.AppendLine('---')
+    [void]$stringBuilder.AppendLine("uid: $uid")
+    if ($generate.summary) `
+    { [void]$stringBuilder.AppendLine("summary: $gen.summary)") }
+
+    $remarksWrote = $false
+    if ($generate.remarks) {
+      [void]$stringBuilder.AppendLine('remarks: |')
+      foreach ($line in ($generate.remarks -split "`r?`n")) `
+      { [void]$stringBuilder.AppendLine(" $line") }
+      $remarksWrote = $true
+    }
+    if ($generate.params) {
+      if (-not $remarksWrote) `
+      { [void]$stringBuilder.AppendLine('remarks: |'); $remarksWrote = $true }
+      [void]$stringBuilder.AppendLine(' Parameters:' )
+      foreach ($keyValue in $generate.params.PSObject.Properties) {
+        [void]$stringBuilder.AppendLine(" - $($keyValue.Name): $($keyValue.Value)")
+      }
+    }
+    if ($generate.returns) {
+      if (-not $remarksWrote) `
+      { [void]$stringBuilder.AppendLine('remarks: |'); $remarksWrote = $true }
+      [void]$stringBuilder.AppendLine(" Returns: $($generate.returns)")
+    }
+    [void]$stringBuilder.AppendLine('---')
