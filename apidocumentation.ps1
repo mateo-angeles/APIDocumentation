@@ -103,3 +103,22 @@ foreach ($yml in $ymls) {
   $doc = ConvertFrom-Yaml $raw
   $items = $doc.items
   if (-not $items) { continue }
+
+  foreach ($item in $items) {
+    $summary = ($item.summary ?? '').Trim()
+    if ($summary) { continue } # If a summary already exists skip
+
+    $source = $item.source
+    if ($source -is [array]) { $source = $source[0] }
+    $path = $source.path
+    $start = [int]($source.startLine ?? 1)
+    $snippet = GetSnippet -filePath $path -startLine $start
+
+    $prompt = BuildPrompt -item $item -snippet $snippet
+    try {
+      $generate = CallLLM -prompt $prompt
+    }
+    catch {
+      Write-Warning "LLM call failed for $($item.uid): $_"
+      continue
+    }
