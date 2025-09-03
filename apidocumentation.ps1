@@ -51,7 +51,7 @@ function BuildPrompt {
     "summary": string,
     "params": { "<name>": string, ... },
     "returns": string | null,
-    "remakrs": string | null
+    "remarks": string | null
   }
 
   # Symbol
