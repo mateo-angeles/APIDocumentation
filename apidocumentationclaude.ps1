@@ -1,10 +1,5 @@
 docfx.exe metadata .\docfxWindows.json
 
-.\ApiKey.ps1
-$env:Model = "claude-sonnet-4-20250514"
-$env:ApiUrl = "https://api.anthropic.com/v1/messages"
-
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
@@ -20,7 +15,7 @@ $apiDirectory = Join-Path $repo "api"
 $outputDirectory = Join-Path $repo "apidocs"
 New-Item -ItemType Directory -Force -Path $outputDirectory | Out-Null
 
-function SafeName([string]$string) { $string -replace '[^A-Za-z0-9_.-]+','_' }
+function SafeName([string]$string) { $s -replace '[^A-Za-z0-9_.-]+','_' }
 
 function GetSnippet {
   param([string]$filePath, [int]$startLine, [int]$radius = 40)
@@ -30,7 +25,7 @@ function GetSnippet {
   $lines = Get-Content -LiteralPath $path -Encoding UTF8
   $indexZero = [Math]::Max(0, $startLine - 1 - $radius)
   $indexOne = [Math]::Min($lines.Count - 1, $startLine - 1 + $radius)
-  ($lines[$indexZero..$indexOne] -join "`n")
+  ($lines[$indexZero, $indexOne] -join "`n")
 }
 
 function BuildPrompt {
@@ -75,30 +70,26 @@ function BuildPrompt {
 function CallLLM {
   param([string]$prompt)
 
-  $apiUrl = $env:ApiUrl
-
-  $headers = @{
-    "Content-Type" = "application/json"
-    "x-api-key" = $env:ApiKey
-    "anthropic-version" = "2023-06-01"
-  }
-
   $body = @{
-    model = $env:Model
-    max_tokens = 300
-    system = 'You write concise, accurate C# XML documentation. Do not invent behavior.'
+    model = $env:LLMModel
+    temperature = 0
+    maxTokens = 300
     messages = @(
-      @{ 
-         role = 'user'; 
-         content = $prompt 
-      }
+      @{ role = 'system'; content = 'You write concise, accurate C# XML documentation.
+      Do not invent behavior.'},
+      @{ role = 'user'; content = $prompt }
     )
   } | ConvertTo-Json -Depth 8
+  $headers = @{
+    authorization = 'Bearer $($env:LLMApiKey)'
+    'Content Type' = 'application/json'
+  }
 
-  $response = Invoke-RestMethod -Uri $env:ApiUrl -Method Post -Headers $headers -Body $body -TimeoutSec 120
+  $response = Invoke -RestMethod -Method Post -Uri `
+  $env:LLMBaseUrl -Header $headers -Body $body -TimeoutSec 120
 
   # Adjust to your provider's response shape if needed.
-  $content = $response.content[0].text
+  $content = $response.choices[0].message.content
   if ($content -match '^```') {
     $content = $content -replace '^```(?:json)?\s*', '' -replace '\s*```$', ''
   }
@@ -141,7 +132,7 @@ foreach ($yml in $ymls) {
     [void]$stringBuilder.AppendLine('---')
     [void]$stringBuilder.AppendLine("uid: $uid")
     if ($generate.summary) `
-    { [void]$stringBuilder.AppendLine("summary: $($generate.summary)") }
+    { [void]$stringBuilder.AppendLine("summary: $gen.summary)") }
 
     $remarksWrote = $false
     if ($generate.remarks) {
@@ -172,4 +163,4 @@ foreach ($yml in $ymls) {
 }
 Write-Host "Created/updated $count overwrite files in apidocs/"
 
-docfx.exe build .\docfxWindows.json --serve
+docfx.exe build .\docfx.json --serve
