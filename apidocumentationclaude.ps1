@@ -75,8 +75,6 @@ function BuildPrompt {
 function CallLLM {
   param([string]$prompt)
 
-  $apiUrl = $env:ApiUrl
-
   $headers = @{
     "Content-Type" = "application/json"
     "x-api-key" = $env:ApiKey

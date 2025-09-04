@@ -116,8 +116,6 @@ jobs:
         function CallLLM {
           param([string]$prompt)
 
-          $apiUrl = $env:LLM_BASE_URL
-
           $headers = @{
             "Content-Type" = "application/json"
             "x-api-key" = $env:LLM_API_KEY
