@@ -11,15 +11,25 @@
         }
       ],
       "output": "api",
-      "includePrivateMembers": true,
+      "includePrivateMembers": false,
       "shouldSkipMarkup": false
     }
   ],
   "build": {
     "content": [
       {
-        "files": "**/*.{md,yml}",
-        "exclude": "_site/**"
+        "files": "api/*.yml"
+      },
+      {
+        "files": "toc.yml"
+      },
+      {
+        "files": "index.md"
+      }
+    ],
+    "overwrite": [
+      {
+        "files": "apidocs/*.md"
       }
     ],
     "output": "_site",
