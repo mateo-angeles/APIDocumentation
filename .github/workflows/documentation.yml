@@ -46,6 +46,7 @@ jobs:
         $ErrorActionPreference = 'Stop'
 
         # Check if running on powershell 7+
+        Install-Module -Name powershell-yaml -Scope CurrentUser
         if (-not (Get-Command ConvertFrom-Yaml -ErrorAction SilentlyContinue))
         {
           throw "This step required PowerShell 7+ (ConvertFrom-Yaml). The GitHub 
