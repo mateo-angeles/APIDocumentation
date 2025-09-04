@@ -116,16 +116,16 @@ jobs:
         function CallLLM {
           param([string]$prompt)
 
-          $apiUrl = $env:ApiUrl
+          $apiUrl = $env:LLM_BASE_URL
 
           $headers = @{
             "Content-Type" = "application/json"
-            "x-api-key" = $env:ApiKey
+            "x-api-key" = $env:LLM_API_KEY
             "anthropic-version" = "2023-06-01"
           }
 
           $body = @{
-            model = $env:Model
+            model = $env:LLM_MODEL
             max_tokens = 300
             system = 'You write concise, accurate C# XML documentation. `
             Do not invent behavior.'
@@ -137,7 +137,7 @@ jobs:
             )
           } | ConvertTo-Json -Depth 8
 
-          $response = Invoke-RestMethod -Uri $env:ApiUrl -Method Post `
+          $response = Invoke-RestMethod -Uri $env:LLM_BASE_URL -Method Post `
           -Headers $headers -Body $body -TimeoutSec 120
 
           # Adjust to your provider's response shape if needed.
