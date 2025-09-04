@@ -4,26 +4,32 @@
     {
       "src": [
         {
-          "src": ".\\main",
+          "src": "./main",
           "files": [
             "main.csproj"
           ]
         }
       ],
       "output": "api",
-      "includePrivateMembers": true,
-      "shouldSkipMarkup": false,
-      "filter": "filterConfig.yml"
+      "includePrivateMembers": false,
+      "shouldSkipMarkup": false
     }
   ],
   "build": {
     "content": [
       {
-        "files": "**/*.{md,yml}",
-        "exclude": [
-          "_site/**",
-          "filterConfig.yml"
-        ]
+        "files": "api/*.yml"
+      },
+      {
+        "files": "toc.yml"
+      },
+      {
+        "files": "index.md"
+      }
+    ],
+    "overwrite": [
+      {
+        "files": "apidocs/*.md"
       }
     ],
     "output": "_site",
