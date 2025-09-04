@@ -11,8 +11,10 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Allow only one concurrent deployment, skipping runs queued 
+# between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to 
+# allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -58,7 +60,7 @@ jobs:
         $outputDirectory = Join-Path $repo "apidocs"
         New-Item -ItemType Directory -Force -Path $outputDirectory | Out-Null
 
-        function SafeName([string]$string) { $s -replace '[^A-Za-z0-9_.-]+','_' }
+        function SafeName([string]$string) { $string -replace '[^A-Za-z0-9_.-]+','_' }
 
         function GetSnippet {
           param([string]$filePath, [int]$startLine, [int]$radius = 40)
@@ -68,7 +70,7 @@ jobs:
           $lines = Get-Content -LiteralPath $path -Encoding UTF8
           $indexZero = [Math]::Max(0, $startLine - 1 - $radius)
           $indexOne = [Math]::Min($lines.Count - 1, $startLine - 1 + $radius)
-          ($lines[$indexZero, $indexOne] -join "`n")
+          ($lines[$indexZero..$indexOne] -join "`n")
         }
 
         function BuildPrompt {
@@ -86,8 +88,9 @@ jobs:
           }
           $parametersJson = $parameterSpecifications | ConvertTo-Json -Compress
         @"
-          You are a C# API documentation assistant. Only use facts present in the provided
-          signature and snippet. If unsure, say "Unknown". Keep the summary to five sentences.
+          You are a C# API documentation assistant. `
+          Only use facts present in the provided signature and snippet. `
+          If unsure, say "Unknown". Keep the summary to five sentences.
 
           Output JSON with this exact schema:
           {
@@ -113,26 +116,32 @@ jobs:
         function CallLLM {
           param([string]$prompt)
 
-          $body = @{
-            model = $env:LLM_MODEL
-            temperature = 0
-            maxTokens = 300
-            messages = @(
-              @{ role = 'system'; content = 'You write concise, accurate C# XML documentation.
-              Do not invent behavior.'},
-              @{ role = 'user'; content = $prompt }
-            )
-          } | ConvertTo-Json -Depth 8
+          $apiUrl = $env:ApiUrl
+
           $headers = @{
-            authorization = 'Bearer $($env:LLM_API_KEY)'
-            'Content Type' = 'application/json'
+            "Content-Type" = "application/json"
+            "x-api-key" = $env:ApiKey
+            "anthropic-version" = "2023-06-01"
           }
 
-          $response = Invoke -RestMethod -Method Post -Uri `
-          $env:LLM_BASE_URL -Header $headers -Body $body -TimeoutSec 120
+          $body = @{
+            model = $env:Model
+            max_tokens = 300
+            system = 'You write concise, accurate C# XML documentation. `
+            Do not invent behavior.'
+            messages = @(
+              @{ 
+                role = 'user'; 
+                content = $prompt 
+              }
+            )
+          } | ConvertTo-Json -Depth 8
+
+          $response = Invoke-RestMethod -Uri $env:ApiUrl -Method Post `
+          -Headers $headers -Body $body -TimeoutSec 120
 
           # Adjust to your provider's response shape if needed.
-          $content = $response.choices[0].message.content
+          $content = $response.content[0].text
           if ($content -match '^```') {
             $content = $content -replace '^```(?:json)?\s*', '' -replace '\s*```$', ''
           }
@@ -175,7 +184,7 @@ jobs:
             [void]$stringBuilder.AppendLine('---')
             [void]$stringBuilder.AppendLine("uid: $uid")
             if ($generate.summary) `
-            { [void]$stringBuilder.AppendLine("summary: $gen.summary)") }
+            { [void]$stringBuilder.AppendLine("summary: $($generate.summary)") }
 
             $remarksWrote = $false
             if ($generate.remarks) {
