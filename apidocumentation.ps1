@@ -34,14 +34,14 @@ function BuildPrompt {
   $name = $item.name
   $kind = $item.type
   if (-not $kind) { $kind = $Item.kind }
-  $returnType = $item.syntax.return.type
+  $returnType = $item['syntax']?['return']?['type']
   $parameterSpecifications = @()
-  foreach ($parameter in ($item.syntax.parameters ?? @()))
+  foreach ($parameter in ($item['syntax']['parameters'] ?? @()))
   {
     $parameterSpecifications += @{ name = ($parameter.id ?? $parameter.name);
     type = $parameter.type }
   }
-  $parametersJson = $parameterSpecifications | ConverTo-Json -Compress
+  $parametersJson = $parameterSpecifications | ConvertTo-Json -Compress
 @"
   You are a C# API documentation assistant. Only use facts present in the provided
   signature and snippet. If unsure, say "Unknown". Keep the summary to five sentences.
@@ -99,16 +99,17 @@ function CallLLM {
 $count = 0
 $ymls = Get-ChildItem -Path $apiDirectory -Recurse -Filter *.yml
 foreach ($yml in $ymls) {
-  $raw = Get-Content -LiteralPath $y.FullName -Raw -Encoding UTF8
+  $raw = Get-Content -LiteralPath $yml.FullName -Raw -Encoding UTF8
   $doc = ConvertFrom-Yaml $raw
   $items = $doc.items
   if (-not $items) { continue }
 
   foreach ($item in $items) {
-    $summary = ($item.summary ?? '').Trim()
+    $summary = ($item['summary'] ?? '').Trim()
     if ($summary) { continue } # If a summary already exists skip
 
-    $source = $item.source
+    if ($null -eq $item['source']) { continue }
+    $source = $item['source']
     if ($source -is [array]) { $source = $source[0] }
     $path = $source.path
     $start = [int]($source.startLine ?? 1)
