@@ -162,3 +162,5 @@ foreach ($yml in $ymls) {
   }
 }
 Write-Host "Created/updated $count overwrite files in apidocs/"
+
+docfx.exe build .\docfx.json --serve
