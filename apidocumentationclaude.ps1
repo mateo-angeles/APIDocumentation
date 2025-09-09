@@ -1,4 +1,4 @@
-docfx.exe metadata .\docfxWindows.json
+docfx.exe metadata .\docfx.json
 
 .\ApiKey.ps1
 $env:Model = "claude-sonnet-4-20250514"
