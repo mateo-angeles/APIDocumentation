@@ -4,6 +4,7 @@ docfx.exe metadata .\docfxWindows.json
 $env:Model = "claude-sonnet-4-20250514"
 $env:ApiUrl = "https://api.anthropic.com/v1/messages"
 
+# comment for testing
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
